@@ -1,6 +1,6 @@
 require 'bundler/setup'
 require 'active_record'
-require 'active_record/jdbc/import'
+require 'activerecord-jdbc-import'
 require 'ffaker'
 
 SQLITE_CONFIG = {
