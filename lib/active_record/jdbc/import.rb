@@ -69,7 +69,7 @@ module ActiveRecord
         
         "INSERT INTO #{self.class.quoted_table_name} " +
           "(#{quoted_columns.join(', ')}) "  +
-          "VALUES (#{quoted_values.join(', ')});"
+          "VALUES (#{quoted_values.join(', ')})"
       end
       
     end
