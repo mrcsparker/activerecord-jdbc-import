@@ -50,6 +50,18 @@ Or install it yourself as:
 It is easy to use, and probably could be easier still.  Feel free to fork the code,
 make changes, fix bugs, etc.
 
+## Tricks
+
+If you are using MySQL, you can speed up the import by adding the
+following options to your database.yml file:
+
+    development:
+      adapter: mysql
+      ...
+      options:
+        useServerPrepStmts: 'false'
+        rewriteBatchedStatements: 'true'
+
 ## TODO
 
 * The `id` column is currently ignored.  The library assumes that `id` is going to be autoincremented. Make this optional. 
