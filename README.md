@@ -9,6 +9,9 @@ and we duck type, so we just want to say 'bulk load this chunk of data'.
 
 This library aims to make loading data fast and easy.  Just call a method, and it loads your data.
 
+Note: The code here works, but it is pretty ugly.  I am still working
+through the implementation.  This is a playground right now.
+
 ## License
 
 MIT.  Do what you want.  If you make changes please contribute them back.
@@ -46,7 +49,29 @@ Or install it yourself as:
     Product.import(products) 
     
     Product.count.should eq(100)
+
+Or, you might want to use plain hashes.  Creating an ActiveRecord object
+for each row might be too much overhead for you:
+
+    require 'active_record/jdbc/import'
     
+    class Product < ActiveRecord::Base
+        include ActiveRecord::Jdbc::Import
+    end
+    
+    products = []
+    
+    1.upto(100) do
+      product = {
+        :name => "foobar123"
+      }
+      products << product
+    end
+    
+    Product.import(products) 
+    
+    Product.count.should eq(100)
+
 It is easy to use, and probably could be easier still.  Feel free to fork the code,
 make changes, fix bugs, etc.
 
@@ -64,6 +89,8 @@ following options to your database.yml file:
 
 ## TODO
 
+* Support more column types.  Right now, this gem expects text and
+  numeric fields.
 * The `id` column is currently ignored.  The library assumes that `id` is going to be autoincremented. Make this optional. 
 * Test with more databases.  Right now, Teradata, MySQL, and SQLite3 are all working.
 

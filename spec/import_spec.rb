@@ -27,6 +27,7 @@ describe ActiveRecord::Jdbc::Import do
   end
 
   it 'should import 100 rows of data' do
+    Product.delete_all
     products = []
     1.upto(100) do
       product = Product.new
@@ -41,6 +42,41 @@ describe ActiveRecord::Jdbc::Import do
     Product.count.should eq(100)
 
   end
+
+  it 'should import hash data' do
+    Product.delete_all
+    products = []
+    1.upto(100) do
+      product = {
+        :code => Faker::Lorem.word,
+        :name => Faker::Name.name,
+        :vendor => Faker::Name.name,
+        :price => "#{rand(1000)}.#{rand(99)}".to_f
+      }
+      products << product
+    end
+
+    Product.import(products)
+    Product.count.should eq(100)
+  end
+
+  it 'should import hash data - out of order' do
+    Product.delete_all
+    products = []
+    1.upto(100) do
+      product = {
+        :vendor => Faker::Name.name,
+        :name => Faker::Name.name,
+        :price => "#{rand(1000)}.#{rand(99)}".to_f,
+        :code => Faker::Lorem.word
+      }
+      products << product
+    end
+
+    Product.import(products)
+    Product.count.should eq(100)
+  end
+
 
   after(:all) do
     CreateProducts.down
